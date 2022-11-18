@@ -47,14 +47,16 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-osThreadId defaultTaskHandle;
+osThreadId LED_R_HANDLE,LED_G_HANDLE,LED_B_HANDLE;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
+void led_r_task(void const * argument);
+void led_g_task(void const * argument);
+void led_b_task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -102,9 +104,14 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  osThreadDef(LED_R,led_r_task, osPriorityNormal, 0, 128);
+  LED_R_HANDLE = osThreadCreate(osThread(LED_R), NULL);
 
+  osThreadDef(LED_G,led_g_task, osPriorityNormal, 0, 128);
+  LED_G_HANDLE = osThreadCreate(osThread(LED_G), NULL);
+
+  osThreadDef(LED_B,led_b_task, osPriorityNormal, 0, 128);
+  LED_B_HANDLE = osThreadCreate(osThread(LED_B), NULL);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -118,18 +125,36 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
-{
-  /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartDefaultTask */
-}
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void led_b_task(void const *argument){
+  while(1)
+  {
+    HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_RESET);
+    osDelay(500);
+    HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
+    osDelay(500);
+  }
+}
 
+void led_g_task(void const *argument){
+  while(1)
+  {
+    HAL_GPIO_WritePin(LED_G_GPIO_Port,LED_G_Pin,GPIO_PIN_RESET);
+    osDelay(500);
+    HAL_GPIO_WritePin(LED_G_GPIO_Port,LED_G_Pin,GPIO_PIN_SET);
+    osDelay(500);
+  }
+}
+
+void led_r_task(void const *argument){
+  while(1)
+  {
+    HAL_GPIO_WritePin(LED_R_GPIO_Port,LED_R_Pin,GPIO_PIN_RESET);
+    osDelay(500);
+    HAL_GPIO_WritePin(LED_R_GPIO_Port,LED_R_Pin,GPIO_PIN_SET);
+    osDelay(500);
+  }
+}
 /* USER CODE END Application */

@@ -75,7 +75,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_3);
   /* USER CODE END Init */
 
   /* Configure the system clock */
